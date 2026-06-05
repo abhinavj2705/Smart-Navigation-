@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESPL Navigator — Christ Kengeri Campus</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --card: #1e1e1e;
+    --border: #2a2a2a;
+    --accent-fac: #c8a96e;
+    --accent-fac-dim: #8a6f3f;
+    --accent-gen: #6ef0c8;
+    --accent-gen-dim: #2d9e7e;
+    --text-primary: #f0ede8;
+    --text-secondary: #888;
+    --text-muted: #555;
+    --radius: 12px;
+    --radius-lg: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── LANDING ── */
+  #landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.25;
+  }
+  .orb1 { width: 400px; height: 400px; background: #c8a96e; top: -100px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: #6ef0c8; bottom: -80px; right: -60px; }
+
+  .landing-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .landing-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .landing-title span.gold { color: var(--accent-fac); }
+  .landing-title span.mint { color: var(--accent-gen); }
+
+  .landing-sub {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    text-align: center;
+    max-width: 460px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .mode-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 700px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .mode-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.75rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    text-align: left;
+  }
+
+  .mode-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mode-card.faculty::before { background: radial-gradient(circle at top left, rgba(200,169,110,0.12), transparent 60%); }
+  .mode-card.genz::before { background: radial-gradient(circle at top left, rgba(110,240,200,0.1), transparent 60%); }
+
+  .mode-card:hover {
+    transform: translateY(-4px);
+  }
+  .mode-card:hover::before { opacity: 1; }
+  .mode-card.faculty:hover { border-color: var(--accent-fac-dim); box-shadow: 0 12px 40px rgba(200,169,110,0.12); }
+  .mode-card.genz:hover { border-color: var(--accent-gen-dim); box-shadow: 0 12px 40px rgba(110,240,200,0.1); }
+
+  .mode-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .mode-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .mode-card.faculty .mode-label { color: var(--accent-fac); }
+  .mode-card.genz .mode-label { color: var(--accent-gen); }
+
+  .mode-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .mode-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .mode-arrow {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    opacity: 0.3;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .mode-card:hover .mode-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+  /* ── APP SHELL ── */
+  #app { display: none; min-height: 100vh; flex-direction: column; }
+
+  /* TOP NAV */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.75rem;
+    background: rgba(13,13,13,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-logo .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .nav-mode-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 50px;
+  }
+
+  .btn-switch {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-switch:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+  /* MAIN LAYOUT */
+  .app-body {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    flex: 1;
+    min-height: calc(100vh - 57px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    overflow-y: auto;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus-within { border-color: var(--text-muted); }
+  .search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-icon { color: var(--text-muted); font-size: 1rem; }
+
+  .filter-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover, .filter-chip.active { color: var(--text-primary); border-color: var(--text-secondary); }
+
+  .room-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .room-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .room-item:hover { border-color: var(--text-muted); transform: translateX(2px); }
+  .room-item.selected { border-color: var(--active-accent, #c8a96e); background: var(--active-bg, rgba(200,169,110,0.07)); }
+
+  .room-name { font-size: 0.9rem; font-weight: 500; }
+  .room-tag {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .room-floor-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 50px;
+    background: var(--active-bg2, rgba(200,169,110,0.12));
+    color: var(--active-accent, #c8a96e);
+  }
+
+  /* MAP AREA */
+  .map-area {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .map-topbar {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .destination-display {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .dest-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+
+  .dest-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .map-actions { display: flex; gap: 0.6rem; }
+
+  .btn-action {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-action:hover { background: var(--surface); border-color: var(--text-muted); }
+  .btn-action.primary {
+    background: var(--active-accent, #c8a96e);
+    border-color: var(--active-accent, #c8a96e);
+    color: #0d0d0d;
+  }
+  .btn-action.primary:hover { opacity: 0.85; }
+
+  /* MAP FRAME */
+  .map-frame {
+    flex: 1;
+    position: relative;
+    min-height: 500px;
+  }
+
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* INFO PANEL (shows when room selected) */
+  .info-panel {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    min-width: 320px;
+    max-width: 480px;
+    width: calc(100% - 3rem);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 50;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .info-panel.visible { transform: translateX(-50%) translateY(0); }
+
+  .info-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .info-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .info-sub { font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; }
+
+  .info-close {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .info-close:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  .info-steps { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .info-step {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+  }
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--active-bg2, rgba(200,169,110,0.15));
+    color: var(--active-accent, #c8a96e);
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* GenZ specific overrides */
+  body.genz-mode {
+    --active-accent: #6ef0c8;
+    --active-bg: rgba(110,240,200,0.06);
+    --active-bg2: rgba(110,240,200,0.12);
+  }
+
+  body.faculty-mode {
+    --active-accent: #c8a96e;
+    --active-bg: rgba(200,169,110,0.07);
+    --active-bg2: rgba(200,169,110,0.12);
+  }
+
+  /* GenZ vibes panel */
+  .genz-vibes {
+    display: none;
+    background: linear-gradient(135deg, rgba(110,240,200,0.06), rgba(110,200,240,0.06));
+    border: 1px solid rgba(110,240,200,0.2);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+  body.genz-mode .genz-vibes { display: block; }
+  body.genz-mode .faculty-formal { display: none; }
+
+  .faculty-formal { }
+  body.genz-mode .sidebar-heading { color: #6ef0c8; opacity: 0.6; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .app-enter { animation: slideIn 0.4s ease both; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .app-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .sidebar { max-height: 280px; border-right: none; border-bottom: 1px solid var(--border); }
+    .mode-cards { grid-template-columns: 1fr; max-width: 360px; }
+    .landing-title { font-size: 2.5rem; }
+  }
+</style>
+</head>
+<body class="faculty-mode">
+
+<!-- ═══════════ LANDING PAGE ═══════════ -->
+<div id="landing">
+  <div class="bg-grid"></div>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+
+  <div class="landing-badge">Christ University · Kengeri Campus</div>
+
+  <h1 class="landing-title">
+    <span class="gold">ESPL</span><br>
+    <span style="color:var(--text-primary)">Navigator</span>
+  </h1>
+
+  <p class="landing-sub">
+    Find your way across campus — classrooms, labs, offices, and more.
+    Choose your mode to get started.
+  </p>
+
+  <div class="mode-cards">
+    <!-- FACULTY -->
+    <div class="mode-card faculty" onclick="enterMode('faculty')">
+      <div class="mode-icon">🎓</div>
+      <div class="mode-label">Mode 01</div>
+      <div class="mode-title">Faculty</div>
+      <p class="mode-desc">Professional navigation with structured directions and campus information.</p>
+      <div class="mode-arrow">→</div>
+    </div>
+
+    <!-- GENZ -->
+    <div class="mode-card genz" onclick="enterMode('genz')">
+      <div class="mode-icon">🔥</div>
+      <div class="mode-label">Mode 02</div>
+      <div class="mode-title">GenZ</div>
+      <p class="mode-desc">No cap navigation fr — find ur class before the prof marks you absent bestie.</p>
+      <div class="mode-arrow">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="app">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="nav-logo">
+      <span class="dot" id="nav-dot" style="background: var(--active-accent)"></span>
+      <span style="font-family:'Syne',sans-serif;">ESPL Navigator</span>
+    </div>
+    <span class="nav-mode-badge" id="mode-badge"></span>
+    <button class="btn-switch" onclick="goHome()">⟵ Switch Mode</button>
+  </nav>
+
+  <!-- BODY -->
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Search -->
+      <div>
+        <div class="sidebar-heading" id="sidebar-search-label">Search Rooms</div>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="e.g. Lab 3, Seminar Hall..." oninput="filterRooms(this.value)">
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div>
+        <div class="sidebar-heading">Filter by Type</div>
+        <div class="filter-row">
+          <div class="filter-chip active" onclick="setFilter('all', this)">All</div>
+          <div class="filter-chip" onclick="setFilter('class', this)">Classrooms</div>
+          <div class="filter-chip" onclick="setFilter('lab', this)">Labs</div>
+          <div class="filter-chip" onclick="setFilter('office', this)">Offices</div>
+          <div class="filter-chip" onclick="setFilter('amenity', this)">Amenities</div>
+        </div>
+      </div>
+
+      <!-- Room list -->
+      <div>
+        <div class="sidebar-heading" id="room-count-label">All Locations</div>
+        <div class="room-list" id="room-list"></div>
+      </div>
+
+      <!-- GenZ tip box -->
+      <div class="genz-vibes">
+        <strong style="color:var(--accent-gen)">pro tip bestie 💅</strong><br>
+        click a spot to get the lowdown + directions. no cap it's giving GPS energy fr fr
+      </div>
+
+    </aside>
+
+    <!-- MAP AREA -->
+    <main class="map-area">
+
+      <!-- Topbar -->
+      <div class="map-topbar">
+        <div class="destination-display">
+          <div class="dest-label" id="dest-label">Current View</div>
+          <div class="dest-name" id="dest-name">Christ University — Kengeri Campus</div>
+        </div>
+        <div class="map-actions">
+          <button class="btn-action" onclick="openDirections()">
+            🧭 <span id="btn-dir-text">Get Directions</span>
+          </button>
+          <button class="btn-action primary" id="btn-navigate" onclick="openDirections()">
+            <span id="btn-nav-text">Navigate</span> ↗
+          </button>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-frame">
+        <iframe
+          id="gmap"
+          title="Christ University Kengeri Campus Map"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.922640505218!2d77.48611!3d12.90781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3f6f6a6c74b3%3A0x4b5e2a6d3e1c7a2f!2sChrist%20(Deemed%20to%20be%20University)%20Kengeri%20Campus!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <!-- Info panel -->
+      <div class="info-panel" id="info-panel">
+        <div class="info-header">
+          <div>
+            <div class="info-title" id="info-title">Room Name</div>
+            <div class="info-sub" id="info-sub">Floor · Type</div>
+          </div>
+          <button class="info-close" onclick="closePanel()">✕</button>
+        </div>
+        <ul class="info-steps" id="info-steps"></ul>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+// Add/edit rooms here. desc_fac = faculty text, desc_gen = GenZ text
+const rooms = [
+  {
+    id: 1, name: "Seminar Hall A", type: "class", floor: "G",
+    tag: "Capacity: 120",
+    steps_fac: ["Enter through the main gate", "Proceed straight to the central block", "Seminar Hall A is on the ground floor, left wing"],
+    steps_gen: ["walk in the main gate no🧢", "keep going straight bestie", "look left on ground floor — big hall, can't miss it fr"],
+  },
+  {
+    id: 2, name: "Computer Lab 1", type: "lab", floor: "1",
+    tag: "50 Systems · AC",
+    steps_fac: ["Enter main building", "Take the staircase to Floor 1", "Computer Lab 1 is the second door on the right"],
+    steps_gen: ["go in the main building ✅", "climb up one floor (skill issue if u take lift)", "second door right — that's your lab bestie 💻"],
+  },
+  {
+    id: 3, name: "Computer Lab 2", type: "lab", floor: "1",
+    tag: "50 Systems · AC",
+    steps_fac: ["Enter main building", "Take the staircase to Floor 1", "Computer Lab 2 is adjacent to Lab 1"],
+    steps_gen: ["main building → first floor", "right next to Lab 1 bestie, literally just keep walking"],
+  },
+  {
+    id: 4, name: "HOD Office", type: "office", floor: "2",
+    tag: "Dept. of Computer Science",
+    steps_fac: ["Enter main building", "Proceed to Floor 2 via staircase", "HOD Office is at the corridor end, right side"],
+    steps_gen: ["bro main building → floor 2", "walk to the end of corridor, turn right", "it's giving authoritative energy — knock first tho 🚪"],
+  },
+  {
+    id: 5, name: "Library", type: "amenity", floor: "G",
+    tag: "Open 8am – 8pm",
+    steps_fac: ["From the main gate, take the left path", "Library is the standalone building on the left"],
+    steps_gen: ["main gate → go left real quick", "that big quiet building is it 📚 — no loud nosies inside fr"],
+  },
+  {
+    id: 6, name: "Cafeteria", type: "amenity", floor: "G",
+    tag: "Food & Beverages",
+    steps_fac: ["Enter campus, follow signs to the student block", "Cafeteria is at the rear of the student block, ground floor"],
+    steps_gen: ["follow ur nose honestly 👃", "or go to student block → ground floor rear", "it's giving snack heaven energy 🍜"],
+  },
+  {
+    id: 7, name: "Lecture Hall B", type: "class", floor: "2",
+    tag: "Capacity: 80",
+    steps_fac: ["Use main block staircase to Floor 2", "Lecture Hall B is opposite the faculty room"],
+    steps_gen: ["floor 2 main block bestie", "right across from the faculty room — run if you're late 🏃"],
+  },
+  {
+    id: 8, name: "Research Lab", type: "lab", floor: "3",
+    tag: "Restricted Access",
+    steps_fac: ["Proceed to Floor 3 via staircase", "Research Lab is at the end of the corridor — ID card required"],
+    steps_gen: ["floor 3 gang 🔬", "end of corridor, swipe ur ID card", "no sneaking in fr, it's giving restricted area vibes"],
+  },
+  {
+    id: 9, name: "Admin Office", type: "office", floor: "G",
+    tag: "Mon–Sat 9am–5pm",
+    steps_fac: ["From main gate, the Admin Office is in the first building on the right"],
+    steps_gen: ["first building on the right from the gate 🏢", "that's admin, they're lowkey gatekeepers ngl"],
+  },
+  {
+    id: 10, name: "Sports Ground", type: "amenity", floor: "G",
+    tag: "Open campus area",
+    steps_fac: ["Follow the path behind the main block", "Sports Ground is accessible from the rear exit"],
+    steps_gen: ["behind the main block bestie 🏏", "use the rear exit — it's giving fresh air slay energy"],
+  },
+];
+
+let currentMode = 'faculty';
+let activeFilter = 'all';
+let selectedRoom = null;
+
+// ── ENTER MODE ──
+function enterMode(mode) {
+  currentMode = mode;
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  if (mode === 'faculty') {
+    document.body.classList.remove('genz-mode');
+    document.body.classList.add('faculty-mode');
+    document.getElementById('mode-badge').textContent = '🎓 Faculty Mode';
+    document.getElementById('mode-badge').style.cssText = 'background:rgba(200,169,110,0.12);color:#c8a96e;border:1px solid rgba(200,169,110,0.3);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:50px;';
+    document.getElementById('sidebar-search-label').textContent = 'Search Rooms';
+    document.getElementById('btn-dir-text').textContent = 'Get Directions';
+    document.getElementById('btn-nav-text').textContent = 'Navigate';
+    document.getElementById('dest-label').textContent = 'Current View';
+  } else {
+    document.body.classList.remove('faculty-mode');
+    document.body.classList.add('genz-mode');
+    document.getElementById('mode-badge').textContent = '🔥 GenZ Mode';
+    document.getElementById('mode-badge').style.cssText = 'background:rgba(110,240,200,0.1);color:#6ef0c8;border:1px solid rgba(110,240,200,0.25);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:50px;';
+    document.getElementById('sidebar-search-label').textContent = 'Where u tryna go? 👀';
+    document.getElementById('btn-dir-text').textContent = 'take me there';
+    document.getElementById('btn-nav-text').textContent = 'let\'s go 🚀';
+    document.getElementById('dest-label').textContent = 'ur destination bestie';
+  }
+
+  renderRooms(rooms);
+  document.getElementById('app').classList.add('app-enter');
+}
+
+// ── GO HOME ──
+function goHome() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('app').classList.remove('app-enter');
+  selectedRoom = null;
+  closePanel();
+}
+
+// ── FILTER ──
+function setFilter(type, el) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterRooms(document.getElementById('search-input').value);
+}
+
+// ── SEARCH ──
+function filterRooms(query) {
+  const q = query.toLowerCase().trim();
+  const filtered = rooms.filter(r => {
+    const matchType = activeFilter === 'all' || r.type === activeFilter;
+    const matchQ = !q || r.name.toLowerCase().includes(q) || r.tag.toLowerCase().includes(q);
+    return matchType && matchQ;
+  });
+  renderRooms(filtered);
+}
+
+// ── RENDER ROOM LIST ──
+function renderRooms(list) {
+  const container = document.getElementById('room-list');
+  const countLabel = document.getElementById('room-count-label');
+  const isGenz = currentMode === 'genz';
+
+  countLabel.textContent = isGenz
+    ? `${list.length} spots found bestie`
+    : `${list.length} Locations Found`;
+
+  container.innerHTML = list.map(r => `
+    <div class="room-item ${selectedRoom && selectedRoom.id === r.id ? 'selected' : ''}" onclick="selectRoom(${r.id})">
+      <div>
+        <div class="room-name">${r.name}</div>
+        <div class="room-tag">${r.tag}</div>
+      </div>
+      <div class="room-floor-badge">F${r.floor}</div>
+    </div>
+  `).join('');
+}
+
+// ── SELECT ROOM ──
+function selectRoom(id) {
+  selectedRoom = rooms.find(r => r.id === id);
+  if (!selectedRoom) return;
+
+  renderRooms(rooms.filter(r => activeFilter === 'all' || r.type === activeFilter));
+
+  const isGenz = currentMode === 'genz';
+  const steps = isGenz ? selectedRoom.steps_gen : selectedRoom.steps_fac;
+
+  document.getElementById('dest-name').textContent = selectedRoom.name;
+  document.getElementById('info-title').textContent = selectedRoom.name;
+  document.getElementById('info-sub').textContent = `Floor ${selectedRoom.floor} · ${capitalize(selectedRoom.type)}`;
+
+  document.getElementById('info-steps').innerHTML = steps.map((s, i) => `
+    <li class="info-step">
+      <div class="step-num">${i + 1}</div>
+      <span>${s}</span>
+    </li>
+  `).join('');
+
+  document.getElementById('info-panel').classList.add('visible');
+}
+
+function closePanel() {
+  document.getElementById('info-panel').classList.remove('visible');
+  selectedRoom = null;
+  renderRooms(rooms.filter(r => activeFilter === 'all' || r.type === activeFilter));
+  document.getElementById('dest-name').textContent = 'Christ University — Kengeri Campus';
+}
+
+function openDirections() {
+  const url = 'https://www.google.com/maps/dir/?api=1&destination=Christ+Deemed+University+Kengeri+Campus+Bengaluru';
+  window.open(url, '_blank');
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// Init
+renderRooms(rooms);
+</script>
+</body>
+</html>
