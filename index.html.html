@@ -20,6 +20,8 @@
     --text-muted: #555;
     --radius: 12px;
     --radius-lg: 20px;
+    --success: #51cf66;
+    --error: #ff6b6b;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,6 +111,7 @@
     width: 100%;
     max-width: 700px;
     animation: fadeUp 0.6s 0.3s ease both;
+    margin-bottom: 3rem;
   }
 
   .mode-card {
@@ -179,6 +182,328 @@
     transition: opacity 0.2s, transform 0.2s;
   }
   .mode-card:hover .mode-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+  /* ── UPCOMING EVENTS SECTION ── */
+  .events-section {
+    width: 100%;
+    max-width: 700px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .events-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+  }
+
+  .events-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .admin-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .admin-btn:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease;
+  }
+
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--event-accent, #c8a96e);
+    transition: width 0.3s ease;
+  }
+
+  .event-card:hover {
+    border-color: var(--event-accent, #c8a96e);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+  }
+
+  .event-card:hover::before { width: 100%; opacity: 0.1; }
+
+  .event-date {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--event-accent, #c8a96e);
+    margin-bottom: 0.5rem;
+  }
+
+  .event-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .event-location {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .event-type {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 50px;
+    background: rgba(200,169,110,0.12);
+    color: var(--event-accent, #c8a96e);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .event-card.workshop .event-type { background: rgba(110,240,200,0.12); color: #6ef0c8; }
+  .event-card.seminar .event-type { background: rgba(200,169,110,0.12); color: #c8a96e; }
+  .event-card.sports .event-type { background: rgba(255,107,107,0.12); color: #ff6b6b; }
+
+  .no-events {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* ── MODAL ── */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal.active { display: flex; }
+
+  .modal-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .modal-close {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.15s;
+  }
+
+  .modal-close:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-fac);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--accent-fac);
+    color: #0d0d0d;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-secondary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  .btn-secondary:hover { border-color: var(--text-secondary); }
+
+  .btn-delete {
+    background: var(--error);
+    color: white;
+  }
+
+  .btn-delete:hover { opacity: 0.85; }
+
+  .event-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .event-item-info { flex: 1; }
+
+  .event-item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .event-item-details {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .event-item-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .btn-icon:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  .btn-icon.delete:hover { border-color: var(--error); color: var(--error); }
+
+  .auth-status {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .auth-status.authenticated { color: var(--success); }
 
   /* ── APP SHELL ── */
   #app { display: none; min-height: 100vh; flex-direction: column; }
@@ -512,6 +837,11 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   @keyframes slideIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -525,6 +855,9 @@
     .sidebar { max-height: 280px; border-right: none; border-bottom: 1px solid var(--border); }
     .mode-cards { grid-template-columns: 1fr; max-width: 360px; }
     .landing-title { font-size: 2.5rem; }
+    .events-grid { grid-template-columns: 1fr; }
+    .events-header { flex-direction: column; }
+    .events-heading { text-align: left; }
   }
 </style>
 </head>
@@ -568,6 +901,87 @@
       <div class="mode-title">GenZ</div>
       <p class="mode-desc">No cap navigation fr — find ur class before the prof marks you absent bestie.</p>
       <div class="mode-arrow">→</div>
+    </div>
+  </div>
+
+  <!-- ══════════ UPCOMING EVENTS ══════════ -->
+  <div class="events-section">
+    <div class="events-header">
+      <h2 class="events-heading">Upcoming Events</h2>
+      <button class="admin-btn" onclick="openAdminPanel()">⚙️ Admin</button>
+    </div>
+    <div class="events-grid" id="events-grid"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ ADMIN MODAL ═══════════ -->
+<div class="modal" id="admin-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Admin Panel — Manage Events</h2>
+      <button class="modal-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+
+    <!-- Authentication -->
+    <div class="form-group" id="auth-section">
+      <div class="form-label">Admin Password</div>
+      <input type="password" id="admin-password" class="form-input" placeholder="Enter admin password">
+      <div class="form-actions">
+        <button class="btn-primary" onclick="authenticateAdmin()">Authenticate</button>
+      </div>
+      <div class="auth-status" id="auth-status"></div>
+    </div>
+
+    <!-- Admin Controls (hidden until authenticated) -->
+    <div id="admin-controls" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1rem; margin-bottom: 1rem; font-weight: 600;">Add New Event</h3>
+        
+        <div class="form-group">
+          <div class="form-label">Event Title</div>
+          <input type="text" id="event-title" class="form-input" placeholder="e.g. Tech Symposium">
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Date</div>
+          <input type="text" id="event-date" class="form-input" placeholder="e.g. Jun 15">
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Location</div>
+          <input type="text" id="event-location" class="form-input" placeholder="e.g. Seminar Hall A">
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Event Type</div>
+          <select id="event-type" class="form-select">
+            <option value="seminar">Seminar</option>
+            <option value="workshop">Workshop</option>
+            <option value="sports">Sports</option>
+            <option value="cultural">Cultural</option>
+            <option value="academic">Academic</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Icon/Emoji</div>
+          <input type="text" id="event-icon" class="form-input" placeholder="e.g. 💻" maxlength="2">
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" onclick="addEvent()">Add Event</button>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+        <h3 style="font-size: 1rem; margin-bottom: 1rem; font-weight: 600;">Current Events</h3>
+        <div id="events-list"></div>
+      </div>
+
+      <div class="form-actions" style="margin-top: 2rem;">
+        <button class="btn-secondary" onclick="logoutAdmin()">Logout</button>
+      </div>
     </div>
   </div>
 </div>
@@ -650,7 +1064,7 @@
         <iframe
           id="gmap"
           title="Christ University Kengeri Campus Map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.922640505218!2d77.48611!3d12.90781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3f6f6a6c74b3%3A0x4b5e2a6d3e1c7a2f!2sCHRIST%20UNIVERSITY%20BANGALORE%20KENGERI%20CAMPUS!5e0!3m2!1sen!2sin!4v1234567890123"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.922640505218!2d77.48611!3d12.90781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3f6f6a6c74b3%3A0x4b5e2a6d3e1c7a2f!2[...]
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
@@ -674,8 +1088,12 @@
 </div>
 
 <script>
+// ── ADMIN CONFIGURATION ──
+const ADMIN_PASSWORD = 'admin@espl2024'; // Change this to your desired password
+
+let isAdminAuthenticated = false;
+
 // ── DATA ──
-// Add/edit rooms here. desc_fac = faculty text, desc_gen = GenZ text
 const rooms = [
   {
     id: 1, name: "Seminar Hall A", type: "class", floor: "G",
@@ -739,9 +1157,179 @@ const rooms = [
   },
 ];
 
+// Events stored in localStorage for persistence
+let events = JSON.parse(localStorage.getItem('esplEvents')) || [
+  {
+    id: 1,
+    title: "Tech Symposium 2024",
+    date: "Jun 15",
+    location: "Seminar Hall A",
+    type: "seminar",
+    icon: "💻"
+  },
+  {
+    id: 2,
+    title: "Python Workshop",
+    date: "Jun 18",
+    location: "Computer Lab 1",
+    type: "workshop",
+    icon: "🐍"
+  },
+  {
+    id: 3,
+    title: "Campus Sports Meet",
+    date: "Jun 22",
+    location: "Sports Ground",
+    type: "sports",
+    icon: "🏆"
+  },
+  {
+    id: 4,
+    title: "Career Fair",
+    date: "Jun 28",
+    location: "Lecture Hall B",
+    type: "seminar",
+    icon: "🎯"
+  }
+];
+
 let currentMode = 'faculty';
 let activeFilter = 'all';
 let selectedRoom = null;
+
+// ── SAVE EVENTS TO LOCALSTORAGE ──
+function saveEvents() {
+  localStorage.setItem('esplEvents', JSON.stringify(events));
+}
+
+// ── RENDER EVENTS ──
+function renderEvents() {
+  const container = document.getElementById('events-grid');
+  
+  if (!events || events.length === 0) {
+    container.innerHTML = '<div class="no-events">No upcoming events at this time.</div>';
+    return;
+  }
+
+  container.innerHTML = events.map(event => `
+    <div class="event-card ${event.type}">
+      <div class="event-date">${event.date}</div>
+      <div class="event-title">${event.icon} ${event.title}</div>
+      <div class="event-location">📍 ${event.location}</div>
+      <span class="event-type">${event.type}</span>
+    </div>
+  `).join('');
+}
+
+// ── ADMIN PANEL FUNCTIONS ──
+function openAdminPanel() {
+  isAdminAuthenticated = false;
+  document.getElementById('admin-modal').classList.add('active');
+  document.getElementById('auth-section').style.display = 'block';
+  document.getElementById('admin-controls').style.display = 'none';
+  document.getElementById('admin-password').value = '';
+  document.getElementById('auth-status').textContent = '';
+}
+
+function closeAdminPanel() {
+  document.getElementById('admin-modal').classList.remove('active');
+  isAdminAuthenticated = false;
+  document.getElementById('admin-password').value = '';
+}
+
+function authenticateAdmin() {
+  const password = document.getElementById('admin-password').value;
+  const authStatus = document.getElementById('auth-status');
+
+  if (password === ADMIN_PASSWORD) {
+    isAdminAuthenticated = true;
+    document.getElementById('auth-section').style.display = 'none';
+    document.getElementById('admin-controls').style.display = 'block';
+    authStatus.textContent = '✓ Authenticated';
+    authStatus.classList.add('authenticated');
+    renderEventsList();
+  } else {
+    authStatus.textContent = '✗ Incorrect password';
+    authStatus.classList.remove('authenticated');
+  }
+}
+
+function logoutAdmin() {
+  isAdminAuthenticated = false;
+  document.getElementById('auth-section').style.display = 'block';
+  document.getElementById('admin-controls').style.display = 'none';
+  document.getElementById('admin-password').value = '';
+  document.getElementById('auth-status').textContent = '';
+}
+
+function addEvent() {
+  if (!isAdminAuthenticated) return;
+
+  const title = document.getElementById('event-title').value.trim();
+  const date = document.getElementById('event-date').value.trim();
+  const location = document.getElementById('event-location').value.trim();
+  const type = document.getElementById('event-type').value;
+  const icon = document.getElementById('event-icon').value.trim() || '📌';
+
+  if (!title || !date || !location) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  const newEvent = {
+    id: Math.max(...events.map(e => e.id), 0) + 1,
+    title,
+    date,
+    location,
+    type,
+    icon
+  };
+
+  events.push(newEvent);
+  saveEvents();
+  
+  // Clear form
+  document.getElementById('event-title').value = '';
+  document.getElementById('event-date').value = '';
+  document.getElementById('event-location').value = '';
+  document.getElementById('event-type').value = 'seminar';
+  document.getElementById('event-icon').value = '';
+
+  renderEvents();
+  renderEventsList();
+}
+
+function deleteEvent(id) {
+  if (!isAdminAuthenticated) return;
+  
+  if (confirm('Are you sure you want to delete this event?')) {
+    events = events.filter(e => e.id !== id);
+    saveEvents();
+    renderEvents();
+    renderEventsList();
+  }
+}
+
+function renderEventsList() {
+  const container = document.getElementById('events-list');
+  
+  if (!events || events.length === 0) {
+    container.innerHTML = '<div class="no-events">No events added yet</div>';
+    return;
+  }
+
+  container.innerHTML = events.map(event => `
+    <div class="event-item">
+      <div class="event-item-info">
+        <div class="event-item-title">${event.icon} ${event.title}</div>
+        <div class="event-item-details">${event.date} • ${event.location}</div>
+      </div>
+      <div class="event-item-actions">
+        <button class="btn-icon delete" onclick="deleteEvent(${event.id})" title="Delete">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
 
 // ── ENTER MODE ──
 function enterMode(mode) {
@@ -753,7 +1341,7 @@ function enterMode(mode) {
     document.body.classList.remove('genz-mode');
     document.body.classList.add('faculty-mode');
     document.getElementById('mode-badge').textContent = '🎓 Faculty Mode';
-    document.getElementById('mode-badge').style.cssText = 'background:rgba(200,169,110,0.12);color:#c8a96e;border:1px solid rgba(200,169,110,0.3);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;';
+    document.getElementById('mode-badge').style.cssText = 'background:rgba(200,169,110,0.12);color:#c8a96e;border:1px solid rgba(200,169,110,0.3);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:50px;';
     document.getElementById('sidebar-search-label').textContent = 'Search Rooms';
     document.getElementById('btn-dir-text').textContent = 'Get Directions';
     document.getElementById('btn-nav-text').textContent = 'Navigate';
@@ -762,7 +1350,7 @@ function enterMode(mode) {
     document.body.classList.remove('faculty-mode');
     document.body.classList.add('genz-mode');
     document.getElementById('mode-badge').textContent = '🔥 GenZ Mode';
-    document.getElementById('mode-badge').style.cssText = 'background:rgba(110,240,200,0.1);color:#6ef0c8;border:1px solid rgba(110,240,200,0.25);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;';
+    document.getElementById('mode-badge').style.cssText = 'background:rgba(110,240,200,0.1);color:#6ef0c8;border:1px solid rgba(110,240,200,0.25);font-family:Syne,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:50px;';
     document.getElementById('sidebar-search-label').textContent = 'Where u tryna go? 👀';
     document.getElementById('btn-dir-text').textContent = 'take me there';
     document.getElementById('btn-nav-text').textContent = 'let\'s go 🚀';
@@ -860,8 +1448,18 @@ function openDirections() {
 
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+// ── CLOSE MODAL ON OUTSIDE CLICK ──
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('admin-modal');
+  const modalContent = document.querySelector('.modal-content');
+  if (event.target === modal) {
+    closeAdminPanel();
+  }
+});
+
 // Init
 renderRooms(rooms);
+renderEvents();
 </script>
 </body>
 </html>
